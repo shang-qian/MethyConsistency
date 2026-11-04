@@ -1,0 +1,27 @@
+#!/bin/bash 
+#SBATCH -J Bism_call
+#SBATCH -c 38
+#SBATCH --mem=120G
+#SBATCH -t 48:00:00
+#SBATCH -p requeue,general
+#SBATCH -o %x.%j.out
+#SBATCH -e %x.%j.err
+
+#dedup bam information
+dedupbam=$1
+REF=$2
+resultdir=$3
+
+##02 bismark
+
+cd $resultdir
+bismark_methylation_extractor \
+  --paired-end \
+  --multicore 12 \
+  --gzip \
+  --bedGraph \
+  --cytosine_report \
+  --genome_folder $REF \
+  $dedupbam
+
+#--comprehensive

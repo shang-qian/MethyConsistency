@@ -1,0 +1,32 @@
+#!/bin/bash 
+#SBATCH -J biscuit
+#SBATCH -c 38
+#SBATCH --mem=150G
+#SBATCH -t 48:00:00
+#SBATCH -p requeue,general
+#SBATCH -o %x.%j.out
+#SBATCH -e %x.%j.err
+
+#Sample information
+#CleanR1=$1
+#CleanR2=$2
+sample=$1
+inputdir=$2
+resultdir=$3
+
+##02 biscuit
+# Mapping
+REF=/Shang/03Project/01Ref/Cattle/ARS-UCD2/biscuit_index/cattle_v2_genome.fa
+R1=$inputdir/${sample}_R1.clean.fastq.gz
+R2=$inputdir/${sample}_R2.clean.fastq.gz
+
+module load samtools
+biscuit align -@ 36 \
+  ${REF} ${R1} ${R2} | \
+  singularity exec -B /cluster/pixstor:/cluster/pixstor \
+    /Shang/WGBS_pip/biscuit/dupsifter.sif \
+  /dupsifter-release/dupsifter $REF | \
+samtools sort -@ 30 -o $resultdir/${sample}.biscuit.sorted.bam -O BAM -
+samtools index $resultdir/${sample}.biscuit.sorted.bam 
+
+

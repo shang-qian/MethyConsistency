@@ -1,0 +1,30 @@
+#!/bin/bash 
+#SBATCH -J Encode
+#SBATCH -c 38
+#SBATCH --mem=200G
+#SBATCH -t 48:00:00
+#SBATCH -p requeue,general
+#SBATCH -o %x.%j.out
+#SBATCH -e %x.%j.err
+
+#Sample information
+#CleanR1=$1
+#CleanR2=$2
+sample=$1
+inputdir=$2
+resultdir=$3
+sampleG=$4
+
+
+# Mapping
+mkdir -p $resultdir/tmp/$sample
+cd $resultdir/tmp/$sample
+
+WDL_DIR=/Shang/WGBS_pip/wgbs-pipeline
+caper run $WDL_DIR/wgbs-pipeline.wdl -i $resultdir/$sampleG.input.json --singularity \
+  --options $resultdir/$sampleG.workflow_options.json \
+  --no-deepcopy \
+  --max-concurrent-workflows 1 \
+  --max-concurrent-tasks 2 
+
+

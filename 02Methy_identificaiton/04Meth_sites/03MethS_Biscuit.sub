@@ -1,0 +1,20 @@
+#!/bin/bash
+#SBATCH -J MS_BisC
+#SBATCH -c 1
+#SBATCH --mem=20G
+#SBATCH -t 48:00:00
+#SBATCH -p requeue,general
+
+###Project information
+inputdir=$1
+outdir=$2
+sample=$3
+
+###04biscuit
+echo $sample
+
+awk '$4>0 {print $0}' $inputdir/${sample}_pileup_meth_CG.bed >$outdir/01$sample.CG.meth.biscuit.txt
+
+awk '/^NC/&&NF==5 {print $1"\t"$2"\t"$5"\t"int($4*$5+0.5)"\t"int($4*$5+0.5)/$5}' $outdir/01$sample.CG.meth.biscuit.txt \
+> 02$sample.CG.meth.biscuit.chr.txt
+

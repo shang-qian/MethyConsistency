@@ -1,0 +1,22 @@
+#!/bin/bash
+#SBATCH -J Mer_Other
+#SBATCH -c 1
+#SBATCH --mem=10G
+#SBATCH -t 1:00:00
+#SBATCH -p requeue,general
+
+
+##Project information
+strandsite=$1
+outdir=$2
+sample=$3
+
+###04biscuit
+echo $strandsite
+echo $outdir
+echo $sample
+
+module load r/4.4.0
+cd $outdir 
+Rscript /Shang/03Project/01Script/03Adaptive_filtering/01Merge_strand/01Merge_strand.r $strandsite $outdir $sample
+

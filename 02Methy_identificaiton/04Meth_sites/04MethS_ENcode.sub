@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH -J MS_ENfilter
+#SBATCH -c 1
+#SBATCH --mem=20G
+#SBATCH -t 48:00:00
+#SBATCH -p requeue,general
+
+###Project information
+cpgfile=$1
+outdir=$2
+sample=$3
+
+###05Encode
+zcat $cpgfile |awk '$11>0 {print $1"\t"$2"\t"$6"\t"$10"\t"$11/100}' > $outdir/01$sample.CG.meth.Encode.1Contig.txt
+awk '/^NC/ {print $1"\t"$2"\t"$4"\t"int($4*$5+0.5)"\t"int($4*$5+0.5)/$4"\t"$3}' $outdir/01$sample.CG.meth.Encode.1Contig.txt >$outdir/02$sample.CG.meth.chr.ENCODE.txt

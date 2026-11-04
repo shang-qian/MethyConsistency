@@ -1,0 +1,40 @@
+#!/bin/bash 
+#SBATCH -J bwameth
+#SBATCH -c 32
+#SBATCH --mem=150G
+#SBATCH -t 48:00:00
+#SBATCH -p general,requeue
+#SBATCH -o %x.%j.out
+#SBATCH -e %x.%j.err
+
+#Sample information
+#CleanR1=$1
+#CleanR2=$2
+sample=$1
+inputdir=$2
+resultdir=$3
+
+##02 bwameth
+# Mapping
+module load samtools
+bwameth.py \
+    --reference /Shang/03Project/01Ref/Cattle/ARS-UCD2/bwameth_index/cattle_v2_genome.fa \
+    -t 25 \
+    $inputdir/${sample}_R1.clean.fastq.gz \
+    $inputdir/${sample}_R2.clean.fastq.gz |\
+samtools sort -@ 10 -m 8G -o $resultdir/${sample}.bwameth.sorted.bam -
+
+
+samtools index $resultdir/${sample}.bwameth.sorted.bam
+module load picard
+picard MarkDuplicates \
+  I=$resultdir/${sample}.bwameth.sorted.bam \
+  O=$resultdir/${sample}.bwameth.sorted.dedup.bam \
+  M=$resultdir/${sample}.bwameth.sorted.dedup.metrics.txt \
+  REMOVE_DUPLICATES=true \
+  VALIDATION_STRINGENCY=LENIENT
+
+samtools index $resultdir/${sample}.bwameth.sorted.dedup.bam
+
+
+

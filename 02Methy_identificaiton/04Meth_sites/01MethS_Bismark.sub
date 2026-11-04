@@ -1,0 +1,16 @@
+#!/bin/bash
+#SBATCH -J MS_bism
+#SBATCH -c 1
+#SBATCH --mem=20G
+#SBATCH -t 48:00:00
+#SBATCH -p requeue,general
+
+###Project information
+cpgtxt=$1
+outdir=$2
+sample=$3
+
+##01Bismark:extract methylated sites
+
+zcat $cpgtxt | awk '$4>0 {print $0}' > $outdir/01$sample.CG.meth.Bismark.txt
+awk '/^NC/ {print $1"\t"$2-1"\t"$4+$5"\t"$4"\t"$4/($4+$5)"\t"$3}' $outdir/01$sample.CG.meth.Bismark.txt > $outdir/02$sample.CG.meth.Bismark.chr.txt

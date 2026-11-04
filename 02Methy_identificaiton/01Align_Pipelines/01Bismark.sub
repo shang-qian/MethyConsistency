@@ -1,0 +1,40 @@
+#!/bin/bash 
+#SBATCH -J Bismark
+#SBATCH -c 38
+#SBATCH --mem=200G
+#SBATCH -t 48:00:00
+#SBATCH -p general,requeue
+#SBATCH -o %x.%j.out
+#SBATCH -e %x.%j.err
+
+#Sample information
+#CleanR1=$1
+#CleanR2=$2
+sample=$1
+inputdir=$2
+resultdir=$3
+
+##02 bismark
+bismark \
+    --bowtie2 \
+    --parallel 4 \
+    --bam \
+    -p 8 \
+    --prefix $sample  \
+    -1 $inputdir/${sample}_R1.clean.fastq.gz \
+    -2 $inputdir/${sample}_R2.clean.fastq.gz \
+    -o $resultdir \
+    /Shang/03Project/01Ref/Cattle/ARS-UCD2/Bismark_bowtie2
+
+bam=$(ls $resultdir/${sample}*bismark_bt2_pe.bam)
+
+deduplicate_bismark \
+  --bam \
+  --paired \
+  --output_dir $resultdir \
+  $bam 
+
+dedupbam=$(ls $resultdir/${sample}*bismark_bt2_pe.deduplicated.bam)
+module load samtools
+samtools index $dedupbam
+

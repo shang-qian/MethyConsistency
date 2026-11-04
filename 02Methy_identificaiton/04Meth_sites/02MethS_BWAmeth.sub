@@ -1,0 +1,16 @@
+#!/bin/bash
+#SBATCH -J Ms_BWA
+#SBATCH -c 1
+#SBATCH --mem=20G
+#SBATCH -t 48:00:00
+#SBATCH -p requeue,general
+
+###Project information
+inputfile=$1
+outdir=$2
+sample=$3
+
+##Bwameth
+echo $sample
+awk '$4>0&&$6=="CG" {print $0}' $inputfile >$outdir/01$sample.CG.meth.bwameth.txt
+awk '/^NC/ {print $1"\t"$2-1"\t"$4+$5"\t"$4"\t"$4/($4+$5)"\t"$3}' $outdir/01$sample.CG.meth.bwameth.txt > $outdir/02$sample.CG.meth.bwameth.chr.txt
