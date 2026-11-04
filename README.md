@@ -59,7 +59,6 @@ This study analyzed whole-genome bisulfite sequencing (WGBS) methylomes from cat
 
 Sample information, data sources, and accession numbers are provided in the manuscript and its supplementary materials.
 
-Raw sequencing data are not included in this repository.
 
 ## Software and Requirements
 
@@ -75,18 +74,13 @@ Users can navigate to the corresponding module directories to access the scripts
 
 For reproducibility, please refer to the software versions, parameters, and data resources specified in the manuscript and supplementary materials.
 
-## Citation
-
-If you use this code or the MCI framework in your research, please cite the associated publication:
-
-Xie et al. *Methylation consistency across individuals reveals tissue-specific and conserved methylation patterns in cattle and sheep.*
-
-Publication details and DOI will be added upon publication.
-
 ## License
 
 This repository is distributed under the MIT License. See the `LICENSE` file for details.
 
 ## Contact
 
-For questions regarding the code or methodology, please contact the corresponding authors listed in the associated publication.
+For questions regarding the code or methodology, please contact:
+
+**Shang-Qian Xie**  
+Email: your_email@missouri.edu
