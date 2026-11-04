@@ -82,5 +82,5 @@ This repository is distributed under the MIT License. See the `LICENSE` file for
 
 For questions regarding the code or methodology, please contact:
 
-**Shang-Qian Xie**  
-Email: your_email@missouri.edu
+**Shangqian Xie**  
+Email: sxie@missouri.edu
