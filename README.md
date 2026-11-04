@@ -76,11 +76,12 @@ For reproducibility, please refer to the software versions, parameters, and data
 
 ## License
 
-This repository is distributed under the MIT License. See the `LICENSE` file for details.
+This repository is distributed under the MIT License. 
 
 ## Contact
 
 For questions regarding the code or methodology, please contact:
 
 **Shangqian Xie**  
+University of Missouri
 Email: sxie@missouri.edu
